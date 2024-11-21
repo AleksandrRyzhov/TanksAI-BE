@@ -23,6 +23,10 @@ bot.command("menu", (ctx) => {
   );
 });
 
+if (process.env.NODE_ENV !== "production") {
+  bot.launch().then(() => console.log("Бот запущен локально!"));
+}
+
 // Экспорт для Vercel
 module.exports = async (req, res) => {
   if (req.method === "POST") {
