@@ -26,7 +26,12 @@ bot.command("menu", (ctx) => {
 // Экспорт для Vercel
 module.exports = async (req, res) => {
   if (req.method === "POST") {
-    await bot.handleUpdate(req.body, res);
+    try {
+      await bot.handleUpdate(req.body, res);
+    } catch (err) {
+      console.error("Ошибка обработки обновления:", err);
+      res.status(500).send("Internal Server Error");
+    }
   } else {
     res.status(200).send("Бот работает!");
   }
