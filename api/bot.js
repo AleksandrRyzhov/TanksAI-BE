@@ -7,8 +7,11 @@ bot.start((ctx) => {
   ctx.reply(
     "Добро пожаловать! Выберите один из ресурсов:",
     Markup.inlineKeyboard([
-      Markup.button.url("Google", "https://www.google.com"),
-      Markup.button.url("Onliner", "https://www.onliner.by"),
+      Markup.button.url(
+        "Develop",
+        "https://tanks-1678c--develop-2gpq37ce.web.app"
+      ),
+      Markup.button.url("Prod", "https://tanks-1678c.web.app/"),
     ])
   );
 });
@@ -17,8 +20,11 @@ bot.command("menu", (ctx) => {
   ctx.reply(
     "Выберите один из ресурсов:",
     Markup.inlineKeyboard([
-      Markup.button.url("Google", "https://www.google.com"),
-      Markup.button.url("Onliner", "https://www.onliner.by"),
+      Markup.button.url(
+        "Develop",
+        "https://tanks-1678c--develop-2gpq37ce.web.app"
+      ),
+      Markup.button.url("Prod", "https://tanks-1678c.web.app/"),
     ])
   );
 });
