@@ -3,58 +3,70 @@ require("dotenv").config();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
+const mainKeyboard = () =>
+  Markup.keyboard([
+    [
+      Markup.button.webApp("Prod", "https://tanks-1678c.web.app/"),
+      Markup.button.webApp(
+        "Develop",
+        "https://tanks-1678c--develop-2gpq37ce.web.app"
+      ),
+    ],
+    ["Info", "Start"],
+  ])
+    .resize()
+    .persistent();
+
 bot.start((ctx) => {
-  ctx.reply(
-    "Welcome! Choose one of the options:",
-    Markup.keyboard([
-      [
-        Markup.button.webApp(
-          "Develop",
-          "https://tanks-1678c--develop-2gpq37ce.web.app"
-        ),
-      ],
-      [Markup.button.webApp("Prod", "https://tanks-1678c.web.app/")],
-      ["Start"],
-    ])
-      .resize()
-      .oneTime(false)
-  );
+  ctx.reply("Welcome! Choose an option:", mainKeyboard());
 });
 
 bot.hears("Start", (ctx) => {
+  ctx.reply("Welcome again! Choose an option:", mainKeyboard());
+});
+
+bot.hears("Info", (ctx) => {
   ctx.reply(
-    "Welcome again! Choose one of the options:",
-    Markup.keyboard([
-      [
-        Markup.button.webApp(
-          "Develop",
-          "https://tanks-1678c--develop-2gpq37ce.web.app"
-        ),
-      ],
-      [Markup.button.webApp("Prod", "https://tanks-1678c.web.app/")],
-      ["Start"],
+    "Here are some useful resources:",
+    Markup.inlineKeyboard([
+      Markup.button.url(
+        "React ECS Docs",
+        "https://react-ecs.ldlework.com/docs/"
+      ),
+      Markup.button.url(
+        "GitHub: React ECS",
+        "https://github.com/mattblackdev/react-entity-component-system"
+      ),
+      Markup.button.url("npm: Bitecs", "https://www.npmjs.com/package/bitecs"),
     ])
-      .resize()
-      .oneTime(false)
   );
 });
 
 bot.command("menu", (ctx) => {
   ctx.reply(
-    "Choose one of the options:",
-    Markup.keyboard([
-      [
-        Markup.button.webApp(
-          "Develop",
-          "https://tanks-1678c--develop-2gpq37ce.web.app"
-        ),
-      ],
-      [Markup.button.webApp("Prod", "https://tanks-1678c.web.app/")],
-      ["Start"],
+    "Choose a resource to visit:",
+    Markup.inlineKeyboard([
+      Markup.button.url(
+        "React ECS Docs",
+        "https://react-ecs.ldlework.com/docs/"
+      ),
+      Markup.button.url(
+        "GitHub: React ECS",
+        "https://github.com/mattblackdev/react-entity-component-system"
+      ),
+      Markup.button.url("npm: Bitecs", "https://www.npmjs.com/package/bitecs"),
     ])
-      .resize()
-      .oneTime(false)
   );
+});
+
+bot.on("message", (ctx) => {
+  if (
+    !ctx.message.text ||
+    ctx.message.text === "/start" ||
+    ctx.message.text === "/menu"
+  )
+    return;
+  ctx.reply("Choose an option:", mainKeyboard());
 });
 
 if (process.env.NODE_ENV !== "production") {
