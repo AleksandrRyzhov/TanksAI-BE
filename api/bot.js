@@ -5,32 +5,60 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.start((ctx) => {
   ctx.reply(
-    "Добро пожаловать! Выберите мини-приложение:",
-    Markup.inlineKeyboard([
-      Markup.button.webApp(
-        "Develop",
-        "https://tanks-1678c--develop-2gpq37ce.web.app"
-      ),
-      Markup.button.webApp("Prod", "https://tanks-1678c.web.app/"),
+    "Welcome! Choose one of the options:",
+    Markup.keyboard([
+      [
+        Markup.button.webApp(
+          "Develop",
+          "https://tanks-1678c--develop-2gpq37ce.web.app"
+        ),
+      ],
+      [Markup.button.webApp("Prod", "https://tanks-1678c.web.app/")],
+      ["Start"],
     ])
+      .resize()
+      .oneTime(false)
+  );
+});
+
+bot.hears("Start", (ctx) => {
+  ctx.reply(
+    "Welcome again! Choose one of the options:",
+    Markup.keyboard([
+      [
+        Markup.button.webApp(
+          "Develop",
+          "https://tanks-1678c--develop-2gpq37ce.web.app"
+        ),
+      ],
+      [Markup.button.webApp("Prod", "https://tanks-1678c.web.app/")],
+      ["Start"],
+    ])
+      .resize()
+      .oneTime(false)
   );
 });
 
 bot.command("menu", (ctx) => {
   ctx.reply(
-    "Выберите один из ресурсов:",
-    Markup.inlineKeyboard([
-      Markup.button.url(
-        "Develop",
-        "https://tanks-1678c--develop-2gpq37ce.web.app"
-      ),
-      Markup.button.url("Prod", "https://tanks-1678c.web.app/"),
+    "Choose one of the options:",
+    Markup.keyboard([
+      [
+        Markup.button.webApp(
+          "Develop",
+          "https://tanks-1678c--develop-2gpq37ce.web.app"
+        ),
+      ],
+      [Markup.button.webApp("Prod", "https://tanks-1678c.web.app/")],
+      ["Start"],
     ])
+      .resize()
+      .oneTime(false)
   );
 });
 
 if (process.env.NODE_ENV !== "production") {
-  bot.launch().then(() => console.log("Бот запущен локально!"));
+  bot.launch().then(() => console.log("Bot is running locally!"));
 }
 
 // Экспорт для Vercel
@@ -39,10 +67,10 @@ module.exports = async (req, res) => {
     try {
       await bot.handleUpdate(req.body, res);
     } catch (err) {
-      console.error("Ошибка обработки обновления:", err);
+      console.error("Error handling update:", err);
       res.status(500).send("Internal Server Error");
     }
   } else {
-    res.status(200).send("Бот работает!");
+    res.status(200).send("Bot is running!");
   }
 };
