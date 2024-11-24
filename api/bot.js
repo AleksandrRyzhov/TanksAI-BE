@@ -5,13 +5,13 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.start((ctx) => {
   ctx.reply(
-    "Добро пожаловать! Выберите один из ресурсов:",
+    "Добро пожаловать! Выберите мини-приложение:",
     Markup.inlineKeyboard([
-      Markup.button.url(
+      Markup.button.webApp(
         "Develop",
         "https://tanks-1678c--develop-2gpq37ce.web.app"
       ),
-      Markup.button.url("Prod", "https://tanks-1678c.web.app/"),
+      Markup.button.webApp("Prod", "https://tanks-1678c.web.app/"),
     ])
   );
 });
