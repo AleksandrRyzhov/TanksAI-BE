@@ -3,6 +3,7 @@ require("dotenv").config();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
+// Главная клавиатура
 const mainKeyboard = (username) =>
   Markup.keyboard([
     [
@@ -22,16 +23,19 @@ const mainKeyboard = (username) =>
     .resize()
     .persistent();
 
+// Обработчик команды /start
 bot.start((ctx) => {
-  const username = ctx.from.username || ctx.from.first_name || "Player";
-  ctx.reply("Welcome! Choose an option:", mainKeyboard(username));
+  const username = ctx.from.username || ctx.from.first_name || "there";
+  ctx.reply(`Hi, ${username}!`, mainKeyboard(username)); // Приветствие с именем
 });
 
+// Обработчик кнопки Start
 bot.hears("Start", (ctx) => {
-  const username = ctx.from.username || ctx.from.first_name || "Player";
-  ctx.reply("Choose an option:", mainKeyboard(username));
+  const username = ctx.from.username || ctx.from.first_name || "there";
+  ctx.reply(`Welcome back, ${username}!`, mainKeyboard(username)); // Приветствие с именем
 });
 
+// Обработчик кнопки Info
 bot.hears("Info", (ctx) => {
   ctx.reply(
     "Here are some useful resources:",
@@ -49,6 +53,7 @@ bot.hears("Info", (ctx) => {
   );
 });
 
+// Обработчик команды /menu
 bot.command("menu", (ctx) => {
   ctx.reply(
     "Choose a resource to visit:",
@@ -66,16 +71,13 @@ bot.command("menu", (ctx) => {
   );
 });
 
+// Обработчик всех остальных сообщений
 bot.on("message", (ctx) => {
-  if (
-    !ctx.message.text ||
-    ctx.message.text === "/start" ||
-    ctx.message.text === "/menu"
-  )
-    return;
-  ctx.reply("Choose an option:", mainKeyboard());
+  const username = ctx.from.username || ctx.from.first_name || "there";
+  ctx.reply(`Hi, ${username}! Choose an option:`, mainKeyboard(username));
 });
 
+// Запуск бота
 if (process.env.NODE_ENV !== "production") {
   bot.launch().then(() => console.log("Bot is running locally!"));
 }
