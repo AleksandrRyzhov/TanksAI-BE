@@ -3,13 +3,18 @@ require("dotenv").config();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-const mainKeyboard = () =>
+const mainKeyboard = (username) =>
   Markup.keyboard([
     [
-      Markup.button.webApp("Prod", "https://tanks-1678c.web.app/"),
+      Markup.button.webApp(
+        "Prod",
+        `https://tanks-1678c.web.app/?username=${encodeURIComponent(username)}`
+      ),
       Markup.button.webApp(
         "Develop",
-        "https://tanks-1678c--develop-2gpq37ce.web.app"
+        `https://tanks-1678c--develop-2gpq37ce.web.app/?username=${encodeURIComponent(
+          username
+        )}`
       ),
     ],
     ["Info", "Start"],
@@ -18,11 +23,13 @@ const mainKeyboard = () =>
     .persistent();
 
 bot.start((ctx) => {
-  ctx.reply("Welcome! Choose an option:", mainKeyboard());
+  const username = ctx.from.username || ctx.from.first_name || "Player";
+  ctx.reply("Welcome! Choose an option:", mainKeyboard(username));
 });
 
 bot.hears("Start", (ctx) => {
-  ctx.reply("Welcome again! Choose an option:", mainKeyboard());
+  const username = ctx.from.username || ctx.from.first_name || "Player";
+  ctx.reply("Choose an option:", mainKeyboard(username));
 });
 
 bot.hears("Info", (ctx) => {
